@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Таймер</title>
+    <script type='text/javascript'>
+        function create_target_date() {
+            var target_date = new Date();
+            target_date.setHours(23, 59, 59);
+            return target_date;
+        }
+
+        function calculation_timer() {
+            var target_date = create_target_date();
+            var current_date = new Date();
+            val_timer = target_date.getTime() - current_date.getTime();
+
+            var hours = Math.floor(val_timer / 1000 / 60 / 60);
+            var minutes = Math.floor((val_timer - hours * 60 * 60 * 1000) / 1000 / 60);
+            var seconds = Math.floor(((val_timer - hours * 60 * 60 * 1000) - minutes * 60 * 1000) / 1000);
+
+            document.getElementById('hours').innerHTML = hours;
+            document.getElementById('hours_legend').innerHTML = format_legend(hours, ['час', 'часа', 'часов']);
+
+            document.getElementById('minutes').innerHTML = minutes;
+            document.getElementById('minutes_legend').innerHTML = format_legend(minutes, ['минута', 'минуты', 'минут']);
+
+            document.getElementById('seconds').innerHTML = seconds;
+            document.getElementById('seconds_legend').innerHTML = format_legend(seconds, ['секунда', 'секунды', 'секунд']);
+        }
+
+        function start_timer() {
+            calculation_timer();
+            id_timer = setInterval(calculation_timer, 1000);
+        }
+
+        function format_legend(time, legend) {
+            var text = '';
+            if (time >= 11 && time <= 14) {
+                text = legend[2];
+            } else {
+                time = time % 10;
+                if (time == 1)
+                    text = legend[0];
+                else if (time >= 2 && time <= 4)
+                    text = legend[1];
+                else
+                    text = legend[2];
+            }
+            return text;
+        }
+
+    </script>
+
+</head>
+
+<body onload='start_timer();'>
+    Осталось: <span id='hours'></span> <span id='hours_legend'></span> <span id='minutes'></span> <span id='minutes_legend'></span> <span id='seconds'></span> <span id='seconds_legend'></span>
+</body>
+
+</html>
